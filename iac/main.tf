@@ -3,11 +3,11 @@ resource "aws_dynamodb_table" "artists" {
   billing_mode = "PAY_PER_REQUEST"
 
   attribute {
-    name = "dataId"
+    name = "DataId"
     type = "S"
   }
 
-  hash_key = "dataId"
+  hash_key = "DataId"
 }
 
 
