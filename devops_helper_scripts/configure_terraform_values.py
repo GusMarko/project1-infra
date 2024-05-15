@@ -28,6 +28,7 @@ def init_boto3_session():
         region_name=os.environ.get("AWS_REGION"),
     )
 
+
 def replace_tfvars(env, boto3_session):
     aws_region = os.environ.get("AWS_REGION")
     tf_role_credentials = get_aws_secret("/pipeline-user/credentials", boto3_session)
@@ -62,8 +63,6 @@ def get_aws_secret(secret_path, session):
     return secret
 
 
-
-
 ########## START ##########
 if __name__ == "__main__":
-    main()    
+    main()
