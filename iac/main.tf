@@ -8,6 +8,9 @@ resource "aws_dynamodb_table" "artists" {
   }
 
   hash_key = "DataId"
+
+  stream_enabled   = true
+  stream_view_type = "NEW_AND_OLD_IMAGES"
 }
 
 
