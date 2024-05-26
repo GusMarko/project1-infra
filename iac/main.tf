@@ -51,7 +51,7 @@ data "aws_iam_policy_document" "songs" {
   statement {
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::381492201388:user/mg-admin"]
+      identifiers = ["arn:aws:iam::381492201388:user/mg-admin", "arn:aws:iam::381492201388:role/project1-artists-${var.env}"]
     }
 
     actions = [
