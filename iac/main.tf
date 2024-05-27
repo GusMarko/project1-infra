@@ -1,19 +1,3 @@
-resource "aws_dynamodb_table" "artists" {
-  name         = "project1-artists-${var.env}"
-  billing_mode = "PAY_PER_REQUEST"
-
-  attribute {
-    name = "DataId"
-    type = "S"
-  }
-
-  hash_key = "DataId"
-
-  stream_enabled   = true
-  stream_view_type = "NEW_AND_OLD_IMAGES"
-}
-
-
 resource "aws_ecr_repository" "code_images" {
   name = "project1/${var.env}/code-images"
 }
@@ -61,6 +45,37 @@ data "aws_iam_policy_document" "songs" {
     resources = [
       aws_s3_bucket.songs.arn,
       "${aws_s3_bucket.songs.arn}/*",
+    ]
+  }
+}
+
+
+resource "aws_s3_bucket" "artists" {
+  bucket = "project1-artists-${var.env}"
+
+}
+
+resource "aws_s3_bucket_policy" "allow_access_from_lambdas" {
+  bucket = aws_s3_bucket.artists.id
+  policy = data.aws_iam_policy_document.allow_access_from_lambdas.json
+}
+
+data "aws_iam_policy_document" "allow_access_from_lambdas" {
+  statement {
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::381492201388:role/project1-artists-${var.env}", "arn:aws:iam::381492201388:role/project1-artists-table-data-${var.env}"]
+    }
+
+    actions = [
+      "s3:GetObject",
+      "s3:ListBucket",
+      "s3:PutObject",
+    ]
+
+    resources = [
+      aws_s3_bucket.artists.arn,
+      "${aws_s3_bucket.artists.arn}/*",
     ]
   }
 }
